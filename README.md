@@ -1,34 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## How to use
 
-## Getting Started
+### Hygraph
 
-First, run the development server:
+1. Under Schema -> Remote Sources, add a remote resource for Bold
+  - Display Name `Bold`
+  - Type `REST`
+  - Base URL `https://app.boldvideo.io/api`
+  - Headers 
+    - Key: `Authorization` 
+    - Value: [your API Key](https://app.boldvideo.io/settings)
+  - Custom Type Definition
+    **Root**
+    ```
+      type Root {
+        data: Video
+      }
+    ```
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+    **Video**
+    ```
+    type Video {
+      captions: String
+      captions_label: String
+      captions_lang: String
+      description: String
+      duration: Float
+      id: String
+      legacy_video_url: String
+      playback_id: String
+      provider_asset_id: String
+      published_at: String
+      stream_url: String
+      teaser: String
+      thumbnail: String
+      title: String
+      transcription: String
+      type: String
+    }
+    ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Add a `Lessons` Schema
+  - Add a `Title` (Single Line Text), `Description` (multi line), a `Video ID` (string) and the newly created remote resource with the following setttings:
+    - Display Name: `Bold Video`
+    - API ID `boldVideo`
+    - Remote source: `Bold`
+    - Method: `GET`
+    - Return Type: `Root`
+    - Path: `/videos/{{doc.videoId}}` (thanks dude!)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Next.js
 
-## Learn More
+1. Add an `.env` file with your hygraph URL `HYGRAPH_URL`
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+2. Start the server :) 
